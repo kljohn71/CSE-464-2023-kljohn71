@@ -14,7 +14,15 @@ public class GraphParser {
         }
 
         public void addNode(String node) {
-            nodes.add(node);
+            if (!nodes.contains(node)) {
+                nodes.add(node);
+            }
+        }
+
+        public void addNodes(String[] labels) {
+            for (String label : labels) {
+                addNode(label);
+            }
         }
 
         public void addEdge(String sourceNode, String destinationNode) {
@@ -31,7 +39,15 @@ public class GraphParser {
 
         @Override
         public String toString() {
-            return "Nodes: " + nodes + "\nEdges: " + edges;
+            StringBuilder output = new StringBuilder();
+            output.append("Number of Nodes: ").append(nodes.size()).append("\n");
+            output.append("Node Labels: ").append(nodes).append("\n");
+            output.append("Number of Edges: ").append(edges.size()).append("\n");
+            output.append("Edge Directions: ");
+            for (String[] edge : edges) {
+                output.append(edge[0]).append(" -> ").append(edge[1]).append(" ");
+            }
+            return output.toString();
         }
     }
     private final Graph graph;
