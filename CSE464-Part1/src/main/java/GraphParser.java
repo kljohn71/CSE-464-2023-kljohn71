@@ -93,4 +93,44 @@ public class GraphParser {
             e.printStackTrace();
         }
     }
+
+    public void outputDOTGraph(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(toDotString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void outputGraphics(String filePath, String format) {
+        // For simplicity, we'll assume the format is always 'png'
+        if (!format.equals("png")) {
+            System.out.println("Unsupported format. Only 'png' is supported.");
+            return;
+        }
+
+        String dotFilePath = filePath + ".dot";
+        outputDOTGraph(dotFilePath);
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("dot", "-T" + format, dotFilePath, "-o", filePath);
+            Process process = processBuilder.start();
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Delete the temporary DOT file
+        new File(dotFilePath).delete();
+    }
+
+    private String toDotString() {
+        StringBuilder dotString = new StringBuilder();
+        dotString.append("digraph G {\n");
+        for (String[] edge : graph.getEdges()) {
+            dotString.append("\t").append(edge[0]).append(" -> ").append(edge[1]).append(";\n");
+        }
+        dotString.append("}\n");
+        return dotString.toString();
+    }
 }
