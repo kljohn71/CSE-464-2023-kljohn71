@@ -84,7 +84,7 @@ public class GraphParserTest {
                 assertEquals(originalLine, generatedLine);
             }
 
-            assertNull(originalTestDot.readLine());  // Make sure there are no extra lines in original test DOT file
+            assertNull(originalTestDot.readLine());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,7 +117,7 @@ public class GraphParserTest {
                 assertEquals(expectedLine, generatedLine);
             }
 
-            assertNull(expectedOutput.readLine());  // Make sure there are no extra lines in expected file
+            assertNull(expectedOutput.readLine());
         } catch (IOException e) {
             e.printStackTrace();
         }
