@@ -21,8 +21,6 @@ public class GraphParserTest {
     @After
     public void tearDown() {
         graphParser = null;
-
-        // Clean up temporary files if they exist
         File dotFile = new File("output_graph.dot");
         if (dotFile.exists()) {
             File newDotFile = new File("test/output_graph.dot");
@@ -70,7 +68,6 @@ public class GraphParserTest {
         graphParser.parseGraph(testDotFilePath);
         graphParser.outputDOTGraph("output_graph.dot");
 
-        // Check if the output file exists
         File outputDotFile = new File("output_graph.dot");
         assertTrue(outputDotFile.exists());
         try (BufferedReader generatedOutput = new BufferedReader(new FileReader("output_graph.dot"));
@@ -95,7 +92,6 @@ public class GraphParserTest {
         graphParser.parseGraph(testDotFilePath);
         graphParser.outputGraphics("output_graph", "png");
 
-        // Check if the output file exists
         File outputPngFile = new File("output_graph.png");
         assertTrue(outputPngFile.exists());
     }
@@ -104,8 +100,6 @@ public class GraphParserTest {
     public void testOutputGraphWithExpectedFile() {
         graphParser.parseGraph(testDotFilePath);
         graphParser.outputGraph("output_graph.txt");
-
-        // Read the generated output file
         try (BufferedReader generatedOutput = new BufferedReader(new FileReader("output_graph.txt"));
              BufferedReader expectedOutput = new BufferedReader(new FileReader("expected_output.txt"))) {
 
