@@ -71,7 +71,7 @@ public class GraphParser {
                 } else if (isDigraph && line.contains("->")) {
                     String[] parts = line.split("->");
                     String sourceNode = parts[0].trim();
-                    String destinationNode = parts[1].trim().split(";")[0].trim(); // Remove the semicolon
+                    String destinationNode = parts[1].trim().split(";")[0].trim();
                     graph.addNode(sourceNode);
                     graph.addNode(destinationNode);
                     graph.addEdge(sourceNode, destinationNode);
@@ -103,7 +103,7 @@ public class GraphParser {
     }
 
     public void outputGraphics(String filePath, String format) {
-        // For simplicity, we'll assume the format is always 'png'
+        
         if (!format.equals("png")) {
             System.out.println("Unsupported format. Only 'png' is supported.");
             return;
@@ -120,7 +120,6 @@ public class GraphParser {
             e.printStackTrace();
         }
 
-        // Delete the temporary DOT file
         new File(dotFilePath).delete();
     }
 
