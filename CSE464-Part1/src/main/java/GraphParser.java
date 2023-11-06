@@ -186,7 +186,13 @@ public class GraphParser {
         graph.getEdges().removeIf(edge -> edge[0].equals(srcLabel) && edge[1].equals(dstLabel));
     }
 
-    public Path pathGraphSearch(Node src, Node dst) {
+    public enum Algorithm {
+        BFS,
+        DFS
+    }
+
+    public Path pathGraphSearch(Node src, Node dst, Algorithm algo) {
+    if (algo == Algorithm.BFS) {
         List<Node> visited = new ArrayList<>();
         List<List<Node>> queue = new ArrayList<>();
 
@@ -214,5 +220,35 @@ public class GraphParser {
         }
 
         return null;
+    } else if (algo == Algorithm.DFS) {
+        List<Node> visited = new ArrayList<>();
+        List<Node> path = new ArrayList<>();
+
+        Stack<Node> stack = new Stack<>();
+        stack.push(src);
+        visited.add(src);
+
+        while (!stack.isEmpty()) {
+            Node current = stack.pop();
+            path.add(current);
+
+            if (current.equals(dst)) {
+                return new Path(new ArrayList<>(path));
+            }
+
+            for (String[] edge : graph.getEdges()) {
+                if (edge[0].equals(current.getLabel())) {
+                    Node neighbor = new Node(edge[1]);
+                    if (!visited.contains(neighbor)) {
+                        stack.push(neighbor);
+                        visited.add(neighbor);
+                    }
+                }
+            }
+        }
+
+        return null;
     }
+    return null;
+}
 }
