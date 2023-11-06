@@ -3,6 +3,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraphParser {
+    public class Node {
+        private String label;
+
+        public Node(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        }
+    }
+
+    public class Path {
+        private List<Node> nodes;
+
+        public Path(List<Node> nodes) {
+            this.nodes = nodes;
+        }
+
+        public List<Node> getNodes() {
+            return nodes;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < nodes.size() - 1; i++) {
+                result.append(nodes.get(i)).append(" -> ");
+            }
+            result.append(nodes.get(nodes.size() - 1));
+            return result.toString();
+        }
+    }
 
     public class Graph {
         private List<String> nodes;
@@ -147,4 +185,34 @@ public class GraphParser {
     public void removeEdge(String srcLabel, String dstLabel) {
         graph.getEdges().removeIf(edge -> edge[0].equals(srcLabel) && edge[1].equals(dstLabel));
     }
+
+    public Path pathGraphSearch(Node src, Node dst) {
+    List<Node> visited = new ArrayList<>();
+    List<Node> path = new ArrayList<>();
+
+    Stack<Node> stack = new Stack<>();
+    stack.push(src);
+    visited.add(src);
+
+    while (!stack.isEmpty()) {
+        Node current = stack.pop();
+        path.add(current);
+
+        if (current.equals(dst)) {
+            return new Path(new ArrayList<>(path));
+        }
+
+        for (String[] edge : graph.getEdges()) {
+            if (edge[0].equals(current.getLabel())) {
+                Node neighbor = new Node(edge[1]);
+                if (!visited.contains(neighbor)) {
+                    stack.push(neighbor);
+                    visited.add(neighbor);
+                }
+            }
+        }
+    }
+
+    return null;
+}
 }
