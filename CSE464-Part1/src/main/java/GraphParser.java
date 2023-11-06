@@ -132,4 +132,19 @@ public class GraphParser {
         dotString.append("}\n");
         return dotString.toString();
     }
+
+    public void removeNode(String label){
+        graph.getNodes().remove(label);
+        graph.getEdges().removeIf(edge -> edge[0].equals(label) || edge[1].equals(label));
+    }
+
+    public void removeNodes(String[] labels) {
+        for (String label : labels) {
+            removeNode(label);
+        }
+    }
+
+    public void removeEdge(String srcLabel, String dstLabel) {
+        graph.getEdges().removeIf(edge -> edge[0].equals(srcLabel) && edge[1].equals(dstLabel));
+    }
 }

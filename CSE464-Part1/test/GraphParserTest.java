@@ -116,4 +116,49 @@ public class GraphParserTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testRemoveNode() {
+        graphParser.parseGraph(testDotFilePath);
+        graphParser.removeNode("A");
+
+        assertEquals(2, graphParser.getGraph().getNodes().size());
+        assertEquals(1, graphParser.getGraph().getEdges().size());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveNonExistentNode() {
+        graphParser.parseGraph(testDotFilePath);
+        graphParser.removeNode("X");
+    }
+
+    @Test
+    public void testRemoveNodes() {
+        graphParser.parseGraph(testDotFilePath);
+        graphParser.removeNodes(new String[]{"A", "B"});
+
+        assertEquals(1, graphParser.getGraph().getNodes().size());
+        assertEquals(0, graphParser.getGraph().getEdges().size());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveNonExistentNodes() {
+        graphParser.parseGraph(testDotFilePath);
+        graphParser.removeNodes(new String[]{"X", "Y"}); 
+    }
+
+    @Test
+    public void testRemoveEdge() {
+        graphParser.parseGraph(testDotFilePath);
+        graphParser.removeEdge("A", "B");
+
+        assertEquals(3, graphParser.getGraph().getNodes().size());
+        assertEquals(2, graphParser.getGraph().getEdges().size());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveNonExistentEdge() {
+        graphParser.parseGraph(testDotFilePath);
+        graphParser.removeEdge("A", "X");
+    }
 }
