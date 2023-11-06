@@ -187,32 +187,32 @@ public class GraphParser {
     }
 
     public Path pathGraphSearch(Node src, Node dst) {
-    List<Node> visited = new ArrayList<>();
-    List<Node> path = new ArrayList<>();
+        List<Node> visited = new ArrayList<>();
+        List<Node> path = new ArrayList<>();
 
-    Stack<Node> stack = new Stack<>();
-    stack.push(src);
-    visited.add(src);
+        Stack<Node> stack = new Stack<>();
+        stack.push(src);
+        visited.add(src);
 
-    while (!stack.isEmpty()) {
-        Node current = stack.pop();
-        path.add(current);
+        while (!stack.isEmpty()) {
+            Node current = stack.pop();
+            path.add(current);
 
-        if (current.equals(dst)) {
-            return new Path(new ArrayList<>(path));
-        }
+            if (current.equals(dst)) {
+                return new Path(new ArrayList<>(path));
+            }
 
-        for (String[] edge : graph.getEdges()) {
-            if (edge[0].equals(current.getLabel())) {
-                Node neighbor = new Node(edge[1]);
-                if (!visited.contains(neighbor)) {
-                    stack.push(neighbor);
-                    visited.add(neighbor);
+            for (String[] edge : graph.getEdges()) {
+                if (edge[0].equals(current.getLabel())) {
+                    Node neighbor = new Node(edge[1]);
+                    if (!visited.contains(neighbor)) {
+                        stack.push(neighbor);
+                        visited.add(neighbor);
+                    }
                 }
             }
         }
-    }
 
-    return null;
-}
+        return null;
+    }
 }
