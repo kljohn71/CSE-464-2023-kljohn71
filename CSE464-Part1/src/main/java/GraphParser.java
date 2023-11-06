@@ -3,6 +3,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraphParser {
+    public class Node {
+        private String label;
+
+        public Node(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        }
+    }
+
+    public class Path {
+        private List<Node> nodes;
+
+        public Path(List<Node> nodes) {
+            this.nodes = nodes;
+        }
+
+        public List<Node> getNodes() {
+            return nodes;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < nodes.size() - 1; i++) {
+                result.append(nodes.get(i)).append(" -> ");
+            }
+            result.append(nodes.get(nodes.size() - 1));
+            return result.toString();
+        }
+    }
 
     public class Graph {
         private List<String> nodes;
@@ -146,5 +184,35 @@ public class GraphParser {
 
     public void removeEdge(String srcLabel, String dstLabel) {
         graph.getEdges().removeIf(edge -> edge[0].equals(srcLabel) && edge[1].equals(dstLabel));
+    }
+
+    public Path pathGraphSearch(Node src, Node dst) {
+        List<Node> visited = new ArrayList<>();
+        List<List<Node>> queue = new ArrayList<>();
+
+        visited.add(src);
+        queue.add(new ArrayList<>(Collections.singletonList(src)));
+
+        while (!queue.isEmpty()) {
+            List<Node> path = queue.remove(0);
+            Node node = path.get(path.size() - 1);
+
+            for (String[] edge : graph.getEdges()) {
+                if (edge[0].equals(node.getLabel())) {
+                    String neighbor = edge[1];
+                    if (!visited.contains(new Node(neighbor))) {
+                        List<Node> newPath = new ArrayList<>(path);
+                        newPath.add(new Node(neighbor));
+                        queue.add(newPath);
+                        visited.add(new Node(neighbor));
+                        if (neighbor.equals(dst.getLabel())) {
+                            return new Path(newPath);
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }
