@@ -205,73 +205,16 @@ public class GraphParser {
     }
 
     public Path pathGraphSearch(Node src, Node dst, Algorithm algo) {
+        GraphSearchAbstract graphSearch;
+
         if (algo == Algorithm.BFS) {
-            return performBFS(src, dst);
-        } 
-        else if (algo == Algorithm.DFS) {
-            return performDFS(src, dst);
-        }
-        return null;
-    }
-
-    private Path performBFS(Node src, Node dst) {
-        List<Node> visited = new ArrayList<>();
-        List<List<Node>> queue = new ArrayList<>();
-
-        visited.add(src);
-        queue.add(new ArrayList<>(Collections.singletonList(src)));
-
-        while (!queue.isEmpty()) {
-            List<Node> path = queue.remove(0);
-            Node node = path.get(path.size() - 1);
-
-            for (String[] edge : graph.getEdges()) {
-                if (edge[0].equals(node.getLabel())) {
-                    String neighbor = edge[1];
-                    if (!visited.contains(new Node(neighbor))) {
-                        List<Node> newPath = new ArrayList<>(path);
-                        newPath.add(new Node(neighbor));
-                        queue.add(newPath);
-                        visited.add(new Node(neighbor));
-                        if (neighbor.equals(dst.getLabel())) {
-                            return new Path(newPath);
-                        }
-                    }
-                }
-            }
+            graphSearch = new BFS(graph);
+        } else if (algo == Algorithm.DFS) {
+            graphSearch = new DFS(graph);
+        } else {
+            throw new IllegalArgumentException("Unsupported algorithm: " + algo);
         }
 
-        return null;
+        return graphSearch.pathGraphSearch(src, dst);
     }
-
-    private Path performDFS(Node src, Node dst) {
-        List<Node> visited = new ArrayList<>();
-        List<Node> path = new ArrayList<>();
-
-        Stack<Node> stack = new Stack<>();
-        stack.push(src);
-        visited.add(src);
-
-        while (!stack.isEmpty()) {
-            Node current = stack.pop();
-            path.add(current);
-
-            if (current.equals(dst)) {
-                return new Path(new ArrayList<>(path));
-            }
-
-            for (String[] edge : graph.getEdges()) {
-                if (edge[0].equals(current.getLabel())) {
-                    Node neighbor = new Node(edge[1]);
-                    if (!visited.contains(neighbor)) {
-                        stack.push(neighbor);
-                        visited.add(neighbor);
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
 }
