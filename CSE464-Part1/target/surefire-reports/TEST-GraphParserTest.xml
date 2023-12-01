@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="GraphParserTest" time="0.042" tests="12" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="GraphParserTest" time="0.04" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/target/surefire/surefirebooter-20231201122518545_3.jar /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/target/surefire 2023-12-01T12-25-18_496-jvmRun1 surefire-20231201122518545_1tmp surefire_0-20231201122518545_2tmp"/>
+    <property name="sun.java.command" value="/Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/target/surefire/surefirebooter-20231201123405791_3.jar /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/target/surefire 2023-12-01T12-34-05_752-jvmRun1 surefire-20231201123405791_1tmp surefire_0-20231201123405791_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/target/test-classes:/Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/target/classes:/Users/kevinjohnson/.m2/repository/guru/nidi/graphviz-java/0.18.1/graphviz-java-0.18.1.jar:/Users/kevinjohnson/.m2/repository/org/webjars/npm/viz.js-graphviz-java/2.1.3/viz.js-graphviz-java-2.1.3.jar:/Users/kevinjohnson/.m2/repository/guru/nidi/com/kitfox/svgSalamander/1.1.3/svgSalamander-1.1.3.jar:/Users/kevinjohnson/.m2/repository/net/arnx/nashorn-promise/0.1.1/nashorn-promise-0.1.1.jar:/Users/kevinjohnson/.m2/repository/org/apache/commons/commons-exec/1.3/commons-exec-1.3.jar:/Users/kevinjohnson/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/kevinjohnson/.m2/repository/org/slf4j/jcl-over-slf4j/1.7.30/jcl-over-slf4j-1.7.30.jar:/Users/kevinjohnson/.m2/repository/org/slf4j/jul-to-slf4j/1.7.30/jul-to-slf4j-1.7.30.jar:/Users/kevinjohnson/.m2/repository/guru/nidi/com/eclipsesource/j2v8/j2v8_macosx_x86_64/4.6.0/j2v8_macosx_x86_64-4.6.0.jar:/Users/kevinjohnson/.m2/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar:/Users/kevinjohnson/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:/Users/kevinjohnson/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
@@ -28,7 +28,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/target/surefire/surefirebooter-20231201122518545_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/target/surefire/surefirebooter-20231201123405791_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="17.0.8+9-LTS-211"/>
@@ -58,7 +58,7 @@
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
-  <testcase name="testOutputDOTGraph" classname="GraphParserTest" time="0.007">
+  <testcase name="testOutputDOTGraph" classname="GraphParserTest" time="0.003">
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
     <system-err><![CDATA[java.io.FileNotFoundException: original_test_graph.dot (No such file or directory)
@@ -100,7 +100,7 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testAddEdge" classname="GraphParserTest" time="0.001">
+  <testcase name="testAddEdge" classname="GraphParserTest" time="0.0">
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
@@ -108,7 +108,7 @@
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
-  <testcase name="testRemoveNodes" classname="GraphParserTest" time="0.0">
+  <testcase name="testRemoveNodes" classname="GraphParserTest" time="0.001">
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
@@ -116,7 +116,7 @@
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
-  <testcase name="testRemoveEdge" classname="GraphParserTest" time="0.002">
+  <testcase name="testRemoveEdge" classname="GraphParserTest" time="0.0">
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
@@ -124,11 +124,11 @@
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
-  <testcase name="testOutputGraphWithExpectedFile" classname="GraphParserTest" time="0.0">
+  <testcase name="testOutputGraphWithExpectedFile" classname="GraphParserTest" time="0.001">
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
-  <testcase name="testRemoveNonExistentEdge" classname="GraphParserTest" time="0.003">
+  <testcase name="testRemoveNonExistentEdge" classname="GraphParserTest" time="0.001">
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
@@ -136,7 +136,7 @@
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
-  <testcase name="testRemoveNonExistentNodes" classname="GraphParserTest" time="0.0">
+  <testcase name="testRemoveNonExistentNodes" classname="GraphParserTest" time="0.001">
     <system-out><![CDATA[Output DOT file path: /Users/kevinjohnson/Downloads/CSE-464-2023-kljohn71-main/CSE-464-2023-kljohn71-1/CSE464-Part1/test/output_graph.dot
 ]]></system-out>
   </testcase>
