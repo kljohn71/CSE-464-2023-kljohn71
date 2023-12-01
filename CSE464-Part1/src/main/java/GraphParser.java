@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Stack;
 
 public class GraphParser {
     public class Node {
@@ -44,7 +46,7 @@ public class GraphParser {
 
     public class Graph {
         private List<String> nodes;
-        private List<String[]> edges;
+        private ArrayList<String[]> edges;
 
         public Graph() {
             nodes = new ArrayList<>();
@@ -71,7 +73,7 @@ public class GraphParser {
             return nodes;
         }
 
-        public List<String[]> getEdges() {
+        public ArrayList<String[]> getEdges() {
             return edges;
         }
 
@@ -79,13 +81,19 @@ public class GraphParser {
         public String toString() {
             StringBuilder output = new StringBuilder();
             output.append("Number of Nodes: ").append(nodes.size()).append("\n");
-            output.append("Node Labels: ").append(nodes).append("\n");
             output.append("Number of Edges: ").append(edges.size()).append("\n");
-            output.append("Edge Directions: ");
+            output.append("Nodes: ").append(nodes).append("\n");
+            output.append("Edges: [");
+            // Format each edge
             for (String[] edge : edges) {
-                output.append(edge[0]).append(" -> ").append(edge[1]).append(" ");
+                output.append("[").append(edge[0]).append(", ").append(edge[1]).append("], ");
             }
-            return output.toString();
+            // Remove the trailing comma and space if there are edges
+            if (!edges.isEmpty()) {
+                output.setLength(output.length() - 2);
+            }
+            output.append("]\n");
+                    return output.toString();
         }
     }
     private final Graph graph;
@@ -139,28 +147,6 @@ public class GraphParser {
             e.printStackTrace();
         }
     }
-
-    public void outputGraphics(String filePath, String format) {
-        
-        if (!format.equals("png")) {
-            System.out.println("Unsupported format. Only 'png' is supported.");
-            return;
-        }
-
-        String dotFilePath = filePath + ".dot";
-        outputDOTGraph(dotFilePath);
-
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder("dot", "-T" + format, dotFilePath, "-o", filePath);
-            Process process = processBuilder.start();
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        new File(dotFilePath).delete();
-    }
-
     private String toDotString() {
         StringBuilder dotString = new StringBuilder();
         dotString.append("digraph G {\n");
@@ -172,17 +158,28 @@ public class GraphParser {
     }
 
     public void removeNode(String label){
+        if (!graph.getNodes().contains(label)) {
+            throw new IllegalArgumentException("Node does not exist: " + label);
+        }
         graph.getNodes().remove(label);
         graph.getEdges().removeIf(edge -> edge[0].equals(label) || edge[1].equals(label));
     }
 
     public void removeNodes(String[] labels) {
         for (String label : labels) {
+            if (!graph.getNodes().contains(label)) {
+                throw new IllegalArgumentException("Node does not exist: " + label);
+            }
+        }
+        for (String label : labels) {
             removeNode(label);
         }
     }
 
     public void removeEdge(String srcLabel, String dstLabel) {
+        if (!graph.getEdges().stream().anyMatch(edge -> edge[0].equals(srcLabel) && edge[1].equals(dstLabel))) {
+            throw new IllegalArgumentException("Edge does not exist: " + srcLabel + " -> " + dstLabel);
+        }
         graph.getEdges().removeIf(edge -> edge[0].equals(srcLabel) && edge[1].equals(dstLabel));
     }
 

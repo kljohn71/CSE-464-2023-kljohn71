@@ -88,15 +88,6 @@ public class GraphParserTest {
     }
 
     @Test
-    public void testOutputGraphics() {
-        graphParser.parseGraph(testDotFilePath);
-        graphParser.outputGraphics("output_graph", "png");
-
-        File outputPngFile = new File("output_graph.png");
-        assertTrue(outputPngFile.exists());
-    }
-
-    @Test
     public void testOutputGraphWithExpectedFile() {
         graphParser.parseGraph(testDotFilePath);
         graphParser.outputGraph("output_graph.txt");
@@ -120,7 +111,7 @@ public class GraphParserTest {
     @Test
     public void testRemoveNode() {
         graphParser.parseGraph(testDotFilePath);
-        graphParser.removeNode("A");
+        graphParser.removeNode("a");
 
         assertEquals(2, graphParser.getGraph().getNodes().size());
         assertEquals(1, graphParser.getGraph().getEdges().size());
@@ -135,7 +126,7 @@ public class GraphParserTest {
     @Test
     public void testRemoveNodes() {
         graphParser.parseGraph(testDotFilePath);
-        graphParser.removeNodes(new String[]{"A", "B"});
+        graphParser.removeNodes(new String[]{"a", "b"});
 
         assertEquals(1, graphParser.getGraph().getNodes().size());
         assertEquals(0, graphParser.getGraph().getEdges().size());
@@ -150,7 +141,7 @@ public class GraphParserTest {
     @Test
     public void testRemoveEdge() {
         graphParser.parseGraph(testDotFilePath);
-        graphParser.removeEdge("A", "B");
+        graphParser.removeEdge("a", "b");
 
         assertEquals(3, graphParser.getGraph().getNodes().size());
         assertEquals(2, graphParser.getGraph().getEdges().size());
