@@ -1,4 +1,4 @@
-Number of Nodes: 0
-Node Labels: []
-Number of Edges: 0
-Edge Directions: 
+Number of Nodes: 3
+Node Labels: [a, b, c]
+Number of Edges: 3
+Edge Directions: a -> b b -> c c -> a 
