@@ -153,11 +153,14 @@ public class GraphParser {
 
     private String toDotString() {
         StringBuilder dotString = new StringBuilder();
-        dotString.append("digraph G {\n");
+        String graphStart = "digraph G {\n";
+        String graphEnd = "}\n";
+        dotString.append(graphStart);
         for (String[] edge : graph.getEdges()) {
-            dotString.append("\t").append(edge[0]).append(" -> ").append(edge[1]).append(";\n");
+            String edgeString = "\t" + edge[0] + " -> " + edge[1] + ";\n";
+            dotString.append(edgeString);
         }
-        dotString.append("}\n");
+        dotString.append(graphEnd);
         return dotString.toString();
     }
 
