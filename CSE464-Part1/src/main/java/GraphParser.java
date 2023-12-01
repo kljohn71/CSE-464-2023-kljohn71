@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 public class GraphParser {
     public class Node {
@@ -43,35 +45,34 @@ public class GraphParser {
     }
 
     public class Graph {
-        private List<String> nodes;
-        private List<String[]> edges;
+        private List<Node> nodes;
+        private List<Node> edges;
 
         public Graph() {
             nodes = new ArrayList<>();
             edges = new ArrayList<>();
         }
 
-        public void addNode(String node) {
+        public void addNode(Node node) {
             if (!nodes.contains(node)) {
                 nodes.add(node);
             }
         }
 
-        public void addNodes(String[] labels) {
-            for (String label : labels) {
-                addNode(label);
-            }
+        public void addNodes(Node[] nodeArray) {
+            Collections.addAll(nodes, nodeArray);
         }
 
-        public void addEdge(String sourceNode, String destinationNode) {
-            edges.add(new String[]{sourceNode, destinationNode});
+        public void addEdge(Node sourceNode, Node destinationNode) {
+            edges.add(sourceNode);
+            edges.add(destinationNode);
         }
 
-        public List<String> getNodes() {
+        public List<Node> getNodes() {
             return nodes;
         }
 
-        public List<String[]> getEdges() {
+        public List<Node> getEdges() {
             return edges;
         }
 
@@ -79,15 +80,28 @@ public class GraphParser {
         public String toString() {
             StringBuilder output = new StringBuilder();
             output.append("Number of Nodes: ").append(nodes.size()).append("\n");
-            output.append("Node Labels: ").append(nodes).append("\n");
             output.append("Number of Edges: ").append(edges.size()).append("\n");
-            output.append("Edge Directions: ");
-            for (String[] edge : edges) {
-                output.append(edge[0]).append(" -> ").append(edge[1]).append(" ");
+            output.append("Nodes: ").append(nodes).append("\n");
+
+            output.append("Edges: [");
+
+            // Format each edge array
+            for (int i = 0; i < edges.size(); i += 2) {
+                output.append("[")
+                    .append(edges.get(i)).append(" -> ").append(edges.get(i + 1))
+                    .append("], ");
             }
+
+            // Remove the trailing comma and space if there are edges
+            if (!edges.isEmpty()) {
+                output.setLength(output.length() - 2);
+            }
+
+            output.append("]\n");
             return output.toString();
         }
     }
+
     private final Graph graph;
 
     public GraphParser() {
@@ -108,11 +122,13 @@ public class GraphParser {
                     isDigraph = false;
                 } else if (isDigraph && line.contains("->")) {
                     String[] parts = line.split("->");
-                    String sourceNode = parts[0].trim();
-                    String destinationNode = parts[1].trim().split(";")[0].trim();
-                    graph.addNode(sourceNode);
-                    graph.addNode(destinationNode);
-                    graph.addEdge(sourceNode, destinationNode);
+                String sourceNodeLabel = parts[0].trim();
+                String destinationNodeLabel = parts[1].trim().split(";")[0].trim();
+                Node sourceNode = new Node(sourceNodeLabel);
+                Node destinationNode = new Node(destinationNodeLabel);
+                graph.addNode(sourceNode);
+                graph.addNode(destinationNode);
+                graph.addEdge(sourceNode, destinationNode);
                 }
             }
         } catch (IOException e) {
@@ -141,7 +157,6 @@ public class GraphParser {
     }
 
     public void outputGraphics(String filePath, String format) {
-        
         if (!format.equals("png")) {
             System.out.println("Unsupported format. Only 'png' is supported.");
             return;
@@ -164,17 +179,31 @@ public class GraphParser {
     private String toDotString() {
         StringBuilder dotString = new StringBuilder();
         dotString.append("digraph G {\n");
-        for (String[] edge : graph.getEdges()) {
-            dotString.append("\t").append(edge[0]).append(" -> ").append(edge[1]).append(";\n");
+        for (Node node : graph.edges) {
+            dotString.append("\t").append(node).append("\n");
         }
         dotString.append("}\n");
         return dotString.toString();
     }
 
-    public void removeNode(String label){
-        graph.getNodes().remove(label);
-        graph.getEdges().removeIf(edge -> edge[0].equals(label) || edge[1].equals(label));
+    public void removeNode(String label) {
+    final Node[] nodeToRemove = {null};
+
+    for (Node graphNode : graph.getNodes()) {
+        if (graphNode.getLabel().equals(label)) {
+            nodeToRemove[0] = graphNode;
+            break;
+        }
     }
+
+    if (nodeToRemove[0] != null) {
+        graph.getNodes().remove(nodeToRemove[0]); // Remove the node
+
+        // Remove connected edges
+        graph.getEdges().removeIf(edge -> edge.getLabel().equals(nodeToRemove[0].getLabel()) || edge.getLabel().equals(nodeToRemove[0].getLabel())
+        );
+    }
+}
 
     public void removeNodes(String[] labels) {
         for (String label : labels) {
@@ -183,7 +212,7 @@ public class GraphParser {
     }
 
     public void removeEdge(String srcLabel, String dstLabel) {
-        graph.getEdges().removeIf(edge -> edge[0].equals(srcLabel) && edge[1].equals(dstLabel));
+        graph.getEdges().removeIf(edge -> edge.getLabel().equals(srcLabel) && edge.getLabel().equals(dstLabel));
     }
 
     public enum Algorithm {
@@ -192,6 +221,7 @@ public class GraphParser {
     }
 
     public Path pathGraphSearch(Node src, Node dst, Algorithm algo) {
+        StringBuilder dotString = new StringBuilder();
         if (algo == Algorithm.BFS) {
             List<Node> visited = new ArrayList<>();
             List<List<Node>> queue = new ArrayList<>();
@@ -203,14 +233,15 @@ public class GraphParser {
                 List<Node> path = queue.remove(0);
                 Node node = path.get(path.size() - 1);
 
-                for (String[] edge : graph.getEdges()) {
-                    if (edge[0].equals(node.getLabel())) {
-                        String neighbor = edge[1];
-                        if (!visited.contains(new Node(neighbor))) {
+                for (Node var : graph.getEdges()) {
+                    dotString.append("\t").append(var).append(" -> ").append(var).append(";\n");
+                    if (var.equals(node.getLabel())) {
+                        Node neighbor = var;
+                        if (!visited.contains(neighbor)) {
                             List<Node> newPath = new ArrayList<>(path);
-                            newPath.add(new Node(neighbor));
+                            newPath.add(neighbor);
                             queue.add(newPath);
-                            visited.add(new Node(neighbor));
+                            visited.add(neighbor);
                             if (neighbor.equals(dst.getLabel())) {
                                 return new Path(newPath);
                             }
@@ -220,8 +251,7 @@ public class GraphParser {
             }
 
             return null;
-        } 
-        else if (algo == Algorithm.DFS) {
+        } else if (algo == Algorithm.DFS) {
             List<Node> visited = new ArrayList<>();
             List<Node> path = new ArrayList<>();
 
@@ -237,9 +267,9 @@ public class GraphParser {
                     return new Path(new ArrayList<>(path));
                 }
 
-                for (String[] edge : graph.getEdges()) {
-                    if (edge[0].equals(current.getLabel())) {
-                        Node neighbor = new Node(edge[1]);
+                for (Node node : graph.getEdges()) {
+                    if (node.equals(current.getLabel())) {
+                        Node neighbor = node;
                         if (!visited.contains(neighbor)) {
                             stack.push(neighbor);
                             visited.add(neighbor);
