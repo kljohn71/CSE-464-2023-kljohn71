@@ -19,4 +19,5 @@ jobs:
   
     - name: Run Tests
       run: mvn test
+      working-directory: CSE464-Part1
   
