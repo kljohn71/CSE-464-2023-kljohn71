@@ -143,27 +143,6 @@ public class GraphParser {
         }
     }
 
-    public void outputGraphics(String filePath, String format) {
-        
-        if (!format.equals("png")) {
-            System.out.println("Unsupported format. Only 'png' is supported.");
-            return;
-        }
-
-        String dotFilePath = filePath + ".dot";
-        outputDOTGraph(dotFilePath);
-
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder("dot", "-T" + format, dotFilePath, "-o", filePath);
-            Process process = processBuilder.start();
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        new File(dotFilePath).delete();
-    }
-
     private String toDotString() {
         StringBuilder dotString = new StringBuilder();
         dotString.append("digraph G {\n");
