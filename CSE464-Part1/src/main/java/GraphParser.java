@@ -80,21 +80,30 @@ public class GraphParser {
         @Override
         public String toString() {
             StringBuilder output = new StringBuilder();
-            output.append("Number of Nodes: ").append(nodes.size()).append("\n");
-            output.append("Number of Edges: ").append(edges.size()).append("\n");
-            output.append("Nodes: ").append(nodes).append("\n");
+            String nodesInfo = String.format("Number of Nodes: %d\n", nodes.size());
+            output.append(nodesInfo);
+
+            String edgesInfo = String.format("Number of Edges: %d\n", edges.size());
+            output.append(edgesInfo);
+
+            String nodesList = String.format("Nodes: %s\n", nodes);
+            output.append(nodesList);
+
             output.append("Edges: [");
-            // Format each edge
+
             for (String[] edge : edges) {
-                output.append("[").append(edge[0]).append(", ").append(edge[1]).append("], ");
+                String formattedEdge = String.format("[%s, %s], ", edge[0], edge[1]);
+                output.append(formattedEdge);
             }
-            // Remove the trailing comma and space if there are edges
+
             if (!edges.isEmpty()) {
                 output.setLength(output.length() - 2);
             }
+
             output.append("]\n");
-                return output.toString();
+            return output.toString();
         }
+
     }
     private final Graph graph;
 
