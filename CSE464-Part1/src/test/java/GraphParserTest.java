@@ -1,3 +1,8 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +15,7 @@ import guru.nidi.graphviz.model.Graph;
 import guru.nidi.graphviz.parse.Parser;
 
 public class GraphParserTest {
-    private GraphParser graphParser;
+    GraphParser graphParser;
     private String testDotFilePath = "test_graph.dot";
 
     @Before
@@ -45,21 +50,35 @@ public class GraphParserTest {
 
     @Test
     public void testAddNode() {
-        graphParser.getGraph().addNode("A");
-        graphParser.getGraph().addNode("B");
-        assertEquals(2, graphParser.getGraph().getNodes().size());
+        graphParser.parseGraph(testDotFilePath);
+        GraphParser.Node nodeA = graphParser.new Node("a");
+
+        graphParser.addNode(nodeA);
+
+        assertEquals(4, graphParser.getGraph().getNodes().size());
     }
 
     @Test
     public void testAddNodes() {
-        String[] labels = {"A", "B", "C"};
-        graphParser.getGraph().addNodes(labels);
-        assertEquals(3, graphParser.getGraph().getNodes().size());
+        GraphParser graphParser = new GraphParser();
+        GraphParser.Node nodeA = graphParser.new Node("a");
+        GraphParser.Node nodeB = graphParser.new Node("b");
+
+        graphParser.addNodes(new GraphParser.Node[]{nodeA, nodeB});
+
+        assertEquals(2, graphParser.getGraph().getNodes().size());
     }
 
     @Test
     public void testAddEdge() {
-        graphParser.getGraph().addEdge("A", "B");
+        GraphParser graphParser = new GraphParser();
+        GraphParser.Node nodeA = graphParser.new Node("a");
+        GraphParserNode nodeB = graphParser.new Node("b");
+
+        graphParser.addNode(nodeA);
+        graphParser.addNode(nodeB);
+        graphParser.addEdge(nodeA, nodeB);
+
         assertEquals(1, graphParser.getGraph().getEdges().size());
     }
 
@@ -82,6 +101,15 @@ public class GraphParserTest {
             }
 
             assertNull(originalTestDot.readLine());
+
+            List<GraphParser.Node> edges = graphParser.getGraph().getEdges();
+
+            for (int i = 0; i < edges.size(); i += 2) {
+                GraphParser.Node sourceNode = edges.get(i);
+                GraphParser.Node destinationNode = edges.get(i + 1);
+                String expectedEdge = "\t" + sourceNode.getLabel() + " -> " + destinationNode.getLabel() + ";";
+                assertEquals(expectedEdge, generatedOutput.readLine());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
