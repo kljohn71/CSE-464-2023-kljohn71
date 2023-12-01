@@ -93,6 +93,14 @@ public class GraphParser {
     public GraphParser() {
         graph = new Graph();
     }
+    private void processGraphLine(String line) {
+        String[] parts = line.split("->");
+        String sourceNode = parts[0].trim();
+        String destinationNode = parts[1].trim().split(";")[0].trim();
+        graph.addNode(sourceNode);
+        graph.addNode(destinationNode);
+        graph.addEdge(sourceNode, destinationNode);
+    }
 
     public void parseGraph(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -107,12 +115,7 @@ public class GraphParser {
                 } else if (isDigraph && line.startsWith("}")) {
                     isDigraph = false;
                 } else if (isDigraph && line.contains("->")) {
-                    String[] parts = line.split("->");
-                    String sourceNode = parts[0].trim();
-                    String destinationNode = parts[1].trim().split(";")[0].trim();
-                    graph.addNode(sourceNode);
-                    graph.addNode(destinationNode);
-                    graph.addEdge(sourceNode, destinationNode);
+                    processGraphLine(line);
                 }
             }
         } catch (IOException e) {
