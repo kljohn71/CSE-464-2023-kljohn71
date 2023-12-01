@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 public class GraphParser {
+    private GraphSearchStrategy graphSearchStrategy;
     public class Node {
         private String label;
 
@@ -205,16 +206,16 @@ public class GraphParser {
     }
 
     public Path pathGraphSearch(Node src, Node dst, Algorithm algo) {
-        GraphSearchAbstract graphSearch;
-
+        setGraphSearchStrategy(algo);
+        return graphSearchStrategy.pathGraphSearch(src, dst);
+    }
+    private void setGraphSearchStrategy(Algorithm algo) {
         if (algo == Algorithm.BFS) {
-            graphSearch = new BFS(graph);
+            graphSearchStrategy = new BFS(graph);
         } else if (algo == Algorithm.DFS) {
-            graphSearch = new DFS(graph);
+            graphSearchStrategy = new DFS(graph);
         } else {
             throw new IllegalArgumentException("Unsupported algorithm: " + algo);
         }
-
-        return graphSearch.pathGraphSearch(src, dst);
     }
 }
