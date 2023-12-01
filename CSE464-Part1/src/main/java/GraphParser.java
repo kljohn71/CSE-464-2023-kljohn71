@@ -94,9 +94,9 @@ public class GraphParser {
         graph = new Graph();
     }
     private void processGraphLine(String line) {
-        String[] parts = line.split("->");
-        String sourceNode = parts[0].trim();
-        String destinationNode = parts[1].trim().split(";")[0].trim();
+        String[] edgeParts = line.split("->");
+        String sourceNode = edgeParts[0].trim();
+        String destinationNode = edgeParts[1].trim().split(";")[0].trim();
         graph.addNode(sourceNode);
         graph.addNode(destinationNode);
         graph.addEdge(sourceNode, destinationNode);
