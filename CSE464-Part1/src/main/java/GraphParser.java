@@ -154,17 +154,28 @@ public class GraphParser {
     }
 
     public void removeNode(String label){
+        if (!graph.getNodes().contains(label)) {
+            throw new IllegalArgumentException("Node does not exist: " + label);
+        }
         graph.getNodes().remove(label);
         graph.getEdges().removeIf(edge -> edge[0].equals(label) || edge[1].equals(label));
     }
 
     public void removeNodes(String[] labels) {
         for (String label : labels) {
+            if (!graph.getNodes().contains(label)) {
+                throw new IllegalArgumentException("Node does not exist: " + label);
+            }
+        }
+        for (String label : labels) {
             removeNode(label);
         }
     }
 
     public void removeEdge(String srcLabel, String dstLabel) {
+        if (!graph.getEdges().stream().anyMatch(edge -> edge[0].equals(srcLabel) && edge[1].equals(dstLabel))) {
+            throw new IllegalArgumentException("Edge does not exist: " + srcLabel + " -> " + dstLabel);
+        }
         graph.getEdges().removeIf(edge -> edge[0].equals(srcLabel) && edge[1].equals(dstLabel));
     }
 
