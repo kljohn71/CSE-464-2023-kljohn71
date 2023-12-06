@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 public class GraphParser {
-    private GraphSearchStrategy graphSearchStrategy;
-    public class Node {
+    public static class Node {
         private String label;
 
         public Node(String label) {
@@ -23,7 +22,7 @@ public class GraphParser {
         }
     }
 
-    public class Path {
+    public static class Path {
         private List<Node> nodes;
 
         public Path(List<Node> nodes) {
@@ -106,11 +105,6 @@ public class GraphParser {
         }
 
     }
-    private final Graph graph;
-
-    public GraphParser() {
-        graph = new Graph();
-    }
     private void processGraphLine(String line) {
         String[] edgeParts = line.split("->");
         String sourceNode = edgeParts[0].trim();
@@ -139,10 +133,6 @@ public class GraphParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public Graph getGraph() {
-        return graph;
     }
 
     public void outputGraph(String filePath) {
@@ -204,18 +194,130 @@ public class GraphParser {
         BFS,
         DFS
     }
+    public class Context {
+        GraphSearchStrategy strategy;
+        static Graph g;
+        public final BFS bfs = new BFS(g);
+        public final DFS dfs = new DFS(g);
 
-    public Path pathGraphSearch(Node src, Node dst, Algorithm algo) {
-        setGraphSearchStrategy(algo);
-        return graphSearchStrategy.pathGraphSearch(src, dst);
+        public Context(GraphSearchStrategy strategy) {
+            this.strategy = strategy;
+        }
+
+        public Path pathGraphSearch(Node src, Node dst) {
+            return strategy.pathGraphSearch(src, dst);
+        }
     }
-    private void setGraphSearchStrategy(Algorithm algo) {
-        if (algo == Algorithm.BFS) {
-            graphSearchStrategy = new BFS(graph);
-        } else if (algo == Algorithm.DFS) {
-            graphSearchStrategy = new DFS(graph);
-        } else {
-            throw new IllegalArgumentException("Unsupported algorithm: " + algo);
+    static Graph graph;
+    static Context context;
+    public GraphParser() {
+        graph = new Graph();
+        context = new Context(new BFS(graph));
+    }
+    public abstract class GraphSearchStrategy {
+        protected Graph graph;
+        protected List<Node> visited;
+        protected List<List<Node>> queue;
+
+        public GraphSearchStrategy(Graph graph) {
+            this.graph = graph;
+            this.visited = new ArrayList<>();
+            this.queue = new ArrayList<>();
+        }
+        protected abstract Path pathGraphSearch(Node src, Node dst);
+        //protected abstract void fetchNextNodesToSearch(Node node, List<Node> path);
+    }
+    public Path pathGraphSearch(Node src, Node dst, Algorithm algo) {
+        switch (algo) {
+            case BFS:
+                context.strategy = context.bfs;
+                break;
+            case DFS:
+                context.strategy = context.dfs;
+                break;
+            // Add more cases for other strategies if needed
+            default:
+                throw new IllegalArgumentException("Unsupported algorithm: " + algo);
+        }
+
+        return context.pathGraphSearch(src, dst);
+    }
+    public class BFS extends GraphSearchStrategy {
+        private final Graph graph;
+
+        public BFS(Graph graph) {
+            super(graph);
+            this.graph = graph;
+        }
+
+        @Override
+        public Path pathGraphSearch(Node src, Node dst) {
+            List<Node> visited = new ArrayList<>();
+            List<List<Node>> queue = new ArrayList<>();
+
+            visited.add(src);
+            queue.add(new ArrayList<>(Collections.singletonList(src)));
+
+            while (!queue.isEmpty()) {
+                List<Node> path = queue.remove(0);
+                Node node = path.get(path.size() - 1);
+
+                for (String[] edge : graph.getEdges()) {
+                    if (edge[0].equals(node.getLabel())) {
+                        String neighbor = edge[1];
+                        if (!visited.contains(new Node(neighbor))) {
+                            List<Node> newPath = new ArrayList<>(path);
+                            newPath.add(new Node(neighbor));
+                            queue.add(newPath);
+                            visited.add(new Node(neighbor));
+                            if (neighbor.equals(dst.getLabel())) {
+                                return new Path(newPath);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+    }
+    public class DFS extends GraphSearchStrategy {
+        private final Graph graph;
+
+        public DFS(Graph graph) {
+            super(graph);
+            this.graph = graph;
+        }
+
+        @Override
+        public Path pathGraphSearch(Node src, Node dst) {
+            List<Node> visited = new ArrayList<>();
+            List<Node> path = new ArrayList<>();
+
+            Stack<Node> stack = new Stack<>();
+            stack.push(src);
+            visited.add(src);
+
+            while (!stack.isEmpty()) {
+                Node current = stack.pop();
+                path.add(current);
+
+                if (current.equals(dst)) {
+                    return new Path(new ArrayList<>(path));
+                }
+
+                for (String[] edge : graph.getEdges()) {
+                    if (edge[0].equals(current.getLabel())) {
+                        Node neighbor = new Node(edge[1]);
+                        if (!visited.contains(neighbor)) {
+                            stack.push(neighbor);
+                            visited.add(neighbor);
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

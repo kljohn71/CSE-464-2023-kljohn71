@@ -39,28 +39,28 @@ public class GraphParserTest {
     @Test
     public void testParseGraph() {
         graphParser.parseGraph(testDotFilePath);
-        assertEquals(3, graphParser.getGraph().getNodes().size());
-        assertEquals(3, graphParser.getGraph().getEdges().size());
+        assertEquals(3, graphParser.graph.getNodes().size());
+        assertEquals(3, graphParser.graph.getEdges().size());
     }
 
     @Test
     public void testAddNode() {
-        graphParser.getGraph().addNode("A");
-        graphParser.getGraph().addNode("B");
-        assertEquals(2, graphParser.getGraph().getNodes().size());
+        graphParser.graph.addNode("A");
+        graphParser.graph.addNode("B");
+        assertEquals(2, graphParser.graph.getNodes().size());
     }
 
     @Test
     public void testAddNodes() {
         String[] labels = {"A", "B", "C"};
-        graphParser.getGraph().addNodes(labels);
-        assertEquals(3, graphParser.getGraph().getNodes().size());
+        graphParser.graph.addNodes(labels);
+        assertEquals(3, graphParser.graph.getNodes().size());
     }
 
     @Test
     public void testAddEdge() {
-        graphParser.getGraph().addEdge("A", "B");
-        assertEquals(1, graphParser.getGraph().getEdges().size());
+        graphParser.graph.addEdge("A", "B");
+        assertEquals(1, graphParser.graph.getEdges().size());
     }
 
     @Test
@@ -113,8 +113,8 @@ public class GraphParserTest {
         graphParser.parseGraph(testDotFilePath);
         graphParser.removeNode("a");
 
-        assertEquals(2, graphParser.getGraph().getNodes().size());
-        assertEquals(1, graphParser.getGraph().getEdges().size());
+        assertEquals(2, graphParser.graph.getNodes().size());
+        assertEquals(1, graphParser.graph.getEdges().size());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -128,8 +128,8 @@ public class GraphParserTest {
         graphParser.parseGraph(testDotFilePath);
         graphParser.removeNodes(new String[]{"a", "b"});
 
-        assertEquals(1, graphParser.getGraph().getNodes().size());
-        assertEquals(0, graphParser.getGraph().getEdges().size());
+        assertEquals(1, graphParser.graph.getNodes().size());
+        assertEquals(0, graphParser.graph.getEdges().size());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -143,8 +143,8 @@ public class GraphParserTest {
         graphParser.parseGraph(testDotFilePath);
         graphParser.removeEdge("a", "b");
 
-        assertEquals(3, graphParser.getGraph().getNodes().size());
-        assertEquals(2, graphParser.getGraph().getEdges().size());
+        assertEquals(3, graphParser.graph.getNodes().size());
+        assertEquals(2, graphParser.graph.getEdges().size());
     }
 
     @Test(expected = IllegalArgumentException.class)
