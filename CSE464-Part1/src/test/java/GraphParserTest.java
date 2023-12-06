@@ -35,6 +35,7 @@ public class GraphParserTest {
             System.out.println("Output PNG file path: " + newPngFile.getAbsolutePath());
         }
     }
+    
 
     @Test
     public void testParseGraph() {

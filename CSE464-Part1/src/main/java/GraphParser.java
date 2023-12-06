@@ -77,6 +77,16 @@ public class GraphParser {
             return edges;
         }
 
+        public List<String[]> getEdgesForNode(String nodeLabel) {
+            List<String[]> nodeEdges = new ArrayList<>();
+            for (String[] edge : edges) {
+                if (edge[0].equals(nodeLabel)) {
+                    nodeEdges.add(edge);
+                }
+            }
+            return nodeEdges;
+        }
+
         @Override
         public String toString() {
             StringBuilder output = new StringBuilder();
@@ -134,6 +144,30 @@ public class GraphParser {
             e.printStackTrace();
         }
     }
+    private void outputRandomWalkSearch() {
+        // Run random walk searches multiple times and output the search process
+        for (int i = 1; i <= 5; i++) {
+            Node srcNode = new Node("a");
+            Node dstNode = new Node("c");
+
+            System.out.println("Ex " + i);
+            System.out.println("random testing");
+
+            System.out.println("visiting " + context.strategy.getClass().getSimpleName());
+            Path resultPath = context.pathGraphSearch(srcNode, dstNode);
+            System.out.println(resultPath);
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        GraphParser graphParser = new GraphParser();
+        graphParser.parseGraph("test_graph2.dot");
+
+        // Output random walk searches
+        graphParser.outputRandomWalkSearch();
+    }
+
 
     public void outputGraph(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
@@ -192,13 +226,58 @@ public class GraphParser {
 
     public enum Algorithm {
         BFS,
-        DFS
+        DFS,
+        RANDOM_WALK;
+    }
+    public class RandomWalk extends GraphSearchStrategy {
+        private final Graph graph;
+
+        public RandomWalk(Graph graph) {
+            super(graph);
+            this.graph = graph;
+        }
+
+        @Override
+        protected Path pathGraphSearch(Node src, Node dst) {
+            List<Node> visited = new ArrayList<>();
+            List<Node> path = new ArrayList<>();
+            java.util.Random random = new java.util.Random();
+
+            Node current = src;
+            path.add(current);
+
+            while (!current.equals(dst)) {
+                List<String[]> edges = graph.getEdgesForNode(current.getLabel());
+                List<Node> neighbors = new ArrayList<>();
+
+                for (String[] edge : edges) {
+                    Node neighbor = new Node(edge[1]);
+                    if (!visited.contains(neighbor)) {
+                        neighbors.add(neighbor);
+                    }
+                }
+
+                if (neighbors.isEmpty()) {
+                    // If no unvisited neighbors, break the loop
+                    break;
+                }
+
+                // Choose a random neighbor
+                Node randomNeighbor = neighbors.get(random.nextInt(neighbors.size()));
+                path.add(randomNeighbor);
+                visited.add(randomNeighbor);
+                current = randomNeighbor;
+            }
+
+            return new Path(path);
+        }
     }
     public class Context {
         GraphSearchStrategy strategy;
         static Graph g;
         public final BFS bfs = new BFS(g);
         public final DFS dfs = new DFS(g);
+        public final RandomWalk randomWalk = new RandomWalk(g);
 
         public Context(GraphSearchStrategy strategy) {
             this.strategy = strategy;
@@ -235,7 +314,8 @@ public class GraphParser {
             case DFS:
                 context.strategy = context.dfs;
                 break;
-            // Add more cases for other strategies if needed
+            case RANDOM_WALK:
+                context.strategy = context.randomWalk;
             default:
                 throw new IllegalArgumentException("Unsupported algorithm: " + algo);
         }
@@ -320,4 +400,5 @@ public class GraphParser {
             return null;
         }
     }
+
 }
